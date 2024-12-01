@@ -1,4 +1,4 @@
-input = IO.read('/home/human/Documents/AOC_2024/1/input.txt').lines.map(&:chomp)
+input = IO.read('/home/human/Documents/GIT/aoc_2024/1/input.txt').lines.map(&:chomp)
 
 def formatInput(input)
     column1 = []

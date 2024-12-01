@@ -1,1 +1,0 @@
-input = IO.read('/home/human/Documents/AOC_2024/1/input.txt').lines.map(&:chomp)
