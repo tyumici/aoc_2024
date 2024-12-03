@@ -16,21 +16,47 @@ def safeCheck(input)
   withinThree = (0...input.length - 1).all? {
     |i| (input[i] - input[i + 1]).abs >= 1 &&  (input[i] - input[i + 1]).abs <= 3
   }
-  return(increase || decrease) && withinThree
+  note3 = input.first(3)
+  
+  if decrease
+    use_synth :growl
+    sleep 0.2
+    play note3, sustain: 0.75
+  elsif increase
+    samp = input.sample
+    sleep 0.2
+    use_synth :gabberkick
+    play samp
+    use_synth :dpulse
+    play samp, pan: 1
+    sleep 0.1
+    play samp, pan: -1
+  end
+  
+  if (increase && decrease) && !withinThree
+    use_synth :pulse
+    play input
+  end
+  
+  return (increase || decrease) && withinThree
 end
 
-def part1(p1Arr) # 559, #601
+def part1(p1Arr) # 559
   p1Arr.each do |v|
-    puts v
     safe = safeCheck(v)
     if safe
       $safe_count += 1
+      use_synth :gabberkick
+      play v[3]
+      sleep 0.1
     else
       (0...v.length).each do |i|
         modified_array = v[0...i] + v[(i + 1)..-1]
         resafe = safeCheck(modified_array)
         if resafe
           $safe_count += 1
+          use_synth :blade
+          play v.first(2), release: 3, sustain: 2
           break
         end
       end
