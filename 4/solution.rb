@@ -1,5 +1,4 @@
-input = IO.read('/home/human/Documents/GIT/aoc_2024/4/input.txt')
-$input_clean = File.readlines('/home/human/Documents/GIT/aoc_2024/4/input.txt').map(&:chomp)
+$input_clean = File.readlines('/home/human/Documents/GIT/aoc_2024/4/input.txt').map(&:chomp).map(&:chars)
 $word = "XMAS"
 $mass_x = "MAS"
 $directions = [
@@ -12,7 +11,8 @@ $directions = [
   [-1, -1], # up-left
   [-1, 0],  # up
 ]
-
+$delta_row = [-1, 0, 1]
+$delta_col = [-1, 0, 1]
 $part_one = 0
 $part_two = 0
 
@@ -41,4 +41,27 @@ def part1(input)
   puts $part_one
 end
 
+def check_inbound(row, col)
+  row.between?(0, $input_clean.length - 1) && col.between?(0, $input_clean[0].length - 1)
+end
+
+def check_at(row, col)
+  check_inbound(row, col) ? $input_clean[row][col] : nil
+end
+
+def part2(input)
+  (0...input.length).each do |row|
+    (0...input[0].length).each do |col|
+      if check_at(row, col) == 'A'
+        diag1 = (-1..1).map { |i| check_at(row + i, col + i) }.join
+        diag2 = (-1..1).map { |i| check_at(row + i, col - i) }.join
+  
+        $part_two += 1 if (diag1 == $mass_x || diag1.reverse == $mass_x) && (diag2 == $mass_x || diag2.reverse == $mass_x)
+      end
+    end
+  end
+  puts $part_two
+end
+
 part1($input_clean) # 2401
+part2($input_clean) # 1882
